@@ -12,7 +12,7 @@ You will need [Node.js](https://nodejs.org) version 8.0 or greater installed on 
 
 Get the code by either cloning this repository using git
 
-```
+```bash
 git clone <https://github.com/sanity-io/example-frontend-next-js.git>
 ```
 
@@ -20,13 +20,13 @@ git clone <https://github.com/sanity-io/example-frontend-next-js.git>
 
 Once downloaded, open the terminal in the project directory, and install dependencies with:
 
-```
+```bash
 npm install
 ```
 
 If you're running your own Sanity project with the example movie dataset, go to `lib/sanity.js` and change the following lines:
 
-```
+```bash
   projectId: 'YOUR_PROJECT_ID',
   dataset: 'NAME_OF_YOUR_DATASET',
 ```
@@ -35,13 +35,13 @@ You can locate the ID of your project in the header of the [management page for 
 
 You also need to enable `localhost:3000` in your CORS Origins settings! Either through the [management page](https://manage.sanity.io/) under `settings` or by running the below in the project folder you set up with `sanity init`:
 
-```
+```bash
 sanity cors add <http://localhost:3000>
 ```
 
 Then start the example app with:
 
-```
+```bash
 npm run dev
 ```
 
