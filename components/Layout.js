@@ -25,11 +25,8 @@ export default function Layout(props) {
           <img src="/sanity-logo.svg" alt="Sanity Logo" />
         </a>
         +
-        <a href="https://github.com/zeit/next.js" alt="NextJs Logo" >
-          <img
-            className="next"
-            src="/nextjs-logo.svg"
-          />
+        <a href="https://github.com/zeit/next.js" alt="NextJs Logo">
+          <img className="next" src="/nextjs-logo.svg" />
         </a>
         = 💖
       </footer>
