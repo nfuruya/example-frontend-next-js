@@ -1,11 +1,11 @@
-import React from "react";
-import Link from "next/link";
-import Layout from "../../components/Layout";
-import sanity from "../../lib/sanity";
-import listStyles from "../../styles/list";
-import imageUrlFor from "../../utils/imageUrlFor";
+import React from 'react'
+import Link from 'next/link'
+import Layout from '../../components/Layout'
+import sanity from '../../lib/sanity'
+import listStyles from '../../styles/list'
+import imageUrlFor from '../../utils/imageUrlFor'
 
-const personsQuery = `*[_type == "person"] { _id }`;
+const personsQuery = '*[_type == "person"] { _id }'
 
 const singlePersonQuery = `*[_type == "person" && _id == $id] {
   _id,
@@ -18,23 +18,23 @@ const singlePersonQuery = `*[_type == "person" && _id == $id] {
     poster
   }
 }[0]
-`;
+`
 
 const Person = ({ person }) => {
   return (
     <Layout>
-      <div className="person">
+      <div className='person'>
         <div>
           {person.image && <img src={imageUrlFor(person.image).height(500)} />}
         </div>
         <div>
-          <h1 className="title">{person.name}</h1>
+          <h1 className='title'>{person.name}</h1>
           <h2>Related movies</h2>
-          <ul className="list">
+          <ul className='list'>
             {(person.actedIn || []).map((movie) => (
               <li key={movie._id}>
-                <Link href="/movie/[id]" as={`/movie/${movie._id}`}>
-                  <a className="link">
+                <Link href='/movie/[id]' as={`/movie/${movie._id}`}>
+                  <a className='link'>
                     {movie.poster && (
                       <img
                         src={imageUrlFor(movie.poster)
@@ -95,28 +95,29 @@ const Person = ({ person }) => {
         .person .list {
           grid-template-columns: repeat(auto-fit, minmax(100px, 180px));
         }
-      `}</style>
+      `}
+      </style>
       <style jsx>{listStyles}</style>
     </Layout>
-  );
-};
+  )
+}
 
 export const getStaticPaths = async () => {
   // Get the paths we want to pre-render based on persons
-  const persons = await sanity.fetch(personsQuery);
+  const persons = await sanity.fetch(personsQuery)
   const paths = persons.map((person) => ({
-    params: { id: person._id },
-  }));
+    params: { id: person._id }
+  }))
 
   // We'll pre-render only these paths at build time.
   // { fallback: false } means other routes should 404.
-  return { paths, fallback: false };
-};
+  return { paths, fallback: false }
+}
 
 // This function gets called at build time on server-side.
 export const getStaticProps = async ({ params }) => {
-  const person = await sanity.fetch(singlePersonQuery, { id: params.id });
-  return { props: { person } };
-};
+  const person = await sanity.fetch(singlePersonQuery, { id: params.id })
+  return { props: { person } }
+}
 
-export default Person;
+export default Person

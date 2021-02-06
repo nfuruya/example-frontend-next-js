@@ -1,5 +1,5 @@
 /* styles.js */
-import css from "styled-jsx/css";
+import css from 'styled-jsx/css'
 
 export default css`
   .list {
@@ -45,4 +45,4 @@ export default css`
   .link {
     cursor: pointer;
   }
-`;
+`

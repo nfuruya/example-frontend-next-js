@@ -1,12 +1,12 @@
-import React from "react";
-import Link from "next/link";
-import BlockContent from "@sanity/block-content-to-react";
-import Layout from "../../components/Layout";
-import sanity from "../../lib/sanity";
-import listStyles from "../../styles/list";
-import imageUrlFor from "../../utils/imageUrlFor";
+import React from 'react'
+import Link from 'next/link'
+import BlockContent from '@sanity/block-content-to-react'
+import Layout from '../../components/Layout'
+import sanity from '../../lib/sanity'
+import listStyles from '../../styles/list'
+import imageUrlFor from '../../utils/imageUrlFor'
 
-const moviesQuery = `*[_type == "movie"] { _id }`;
+const moviesQuery = '*[_type == "movie"] { _id }'
 
 const singleMovieQuery = `*[_type == "movie" && _id == $id] {
   _id,
@@ -24,21 +24,21 @@ const singleMovieQuery = `*[_type == "movie" && _id == $id] {
     }
   }
 }[0]
-`;
+`
 
 const serializers = {
   types: {
     summaries: (props) => {
-      const { node } = props;
+      const { node } = props
       if (!node) {
-        return false;
+        return false
       }
-      const { summaries } = node;
+      const { summaries } = node
       if (!summaries || summaries.length === 0) {
-        return false;
+        return false
       }
       return (
-        <div className="summaries">
+        <div className='summaries'>
           <h2>{node.caption}</h2>
           <ul>
             {summaries.map((summary) => {
@@ -50,7 +50,7 @@ const serializers = {
                   />
                   — <a href={summary.url}>{summary.author}</a>
                 </li>
-              );
+              )
             })}
           </ul>
           <style jsx>{`
@@ -82,44 +82,45 @@ const serializers = {
             .summaries :global(li:not(:last-child)) {
               border-bottom: 1px solid #ccc;
             }
-          `}</style>
+          `}
+          </style>
         </div>
-      );
-    },
-  },
-};
+      )
+    }
+  }
+}
 
 const Movie = ({ movie }) => {
   const {
-    poster: { crop = { left: 0, top: 0 }, hotspot = { x: 0.5, y: 0.5 } },
-  } = movie;
+    poster: { crop = { left: 0, top: 0 }, hotspot = { x: 0.5, y: 0.5 } }
+  } = movie
   return (
     <Layout>
-      <div className="movie">
+      <div className='movie'>
         <div
-          className="header"
+          className='header'
           style={{
             backgroundImage: `url(${imageUrlFor(movie.poster)})`,
             backgroundPosition: `${(hotspot.x - crop.left) * 100}% ${
               (hotspot.y - crop.top) * 100
-            }%`,
+            }%`
           }}
         >
-          <div className="header-content">
+          <div className='header-content'>
             <h1>{movie.title}</h1>
           </div>
         </div>
 
-        <div className="content">
-          <div className="sidebar">
+        <div className='content'>
+          <div className='sidebar'>
             <img
-              className="poster"
+              className='poster'
               src={imageUrlFor(movie.poster).ignoreImageParams().width(500)}
               alt={`Movie poster for ${movie.title}`}
             />
           </div>
-          <div className="main-content">
-            <div className="overview">
+          <div className='main-content'>
+            <div className='overview'>
               <BlockContent
                 blocks={movie.overview}
                 serializers={serializers}
@@ -128,21 +129,21 @@ const Movie = ({ movie }) => {
               />
             </div>
             <h2>Cast</h2>
-            <ul className="cast-list">
+            <ul className='cast-list'>
               {movie.cast.map((cast) => (
-                <li key={cast._key} className="cast-list-item">
-                  <Link href="/person/[id]" as={`/person/${cast.person._id}`}>
-                    <a className="cast-list-link">
+                <li key={cast._key} className='cast-list-item'>
+                  <Link href='/person/[id]' as={`/person/${cast.person._id}`}>
+                    <a className='cast-list-link'>
                       <span>
                         {cast.person.image && (
                           <img src={imageUrlFor(cast.person.image).width(64)} />
                         )}
                       </span>
                       <span>
-                        <span className="cast-person-name">
+                        <span className='cast-person-name'>
                           {cast.person.name}
                         </span>
-                        <span className="cast-character-name">
+                        <span className='cast-character-name'>
                           {cast.characterName}
                         </span>
                       </span>
@@ -361,28 +362,29 @@ const Movie = ({ movie }) => {
             display: block;
           }
         }
-      `}</style>
+      `}
+      </style>
       <style jsx>{listStyles}</style>
     </Layout>
-  );
-};
+  )
+}
 
 export const getStaticPaths = async () => {
   // Get the paths we want to pre-render based on persons
-  const movies = await sanity.fetch(moviesQuery);
+  const movies = await sanity.fetch(moviesQuery)
   const paths = movies.map((movie) => ({
-    params: { id: movie._id },
-  }));
+    params: { id: movie._id }
+  }))
 
   // We'll pre-render only these paths at build time.
   // { fallback: false } means other routes should 404.
-  return { paths, fallback: false };
-};
+  return { paths, fallback: false }
+}
 
 // This function gets called at build time on server-side.
 export const getStaticProps = async ({ params }) => {
-  const movie = await sanity.fetch(singleMovieQuery, { id: params.id });
-  return { props: { movie } };
-};
+  const movie = await sanity.fetch(singleMovieQuery, { id: params.id })
+  return { props: { movie } }
+}
 
-export default Movie;
+export default Movie
