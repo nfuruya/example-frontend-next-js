@@ -18,7 +18,7 @@ const People = ({ people }) => {
     <Layout>
       <div className="people">
         <ul className="list">
-          {people.map(person => (
+          {people.map((person) => (
             <li key={person._id} className="list__item">
               <Link href="/person/[id]" as={`/person/${person._id}`}>
                 <a>
@@ -54,8 +54,8 @@ const People = ({ people }) => {
 export const getStaticProps = async () => {
   const people = await sanity.fetch(query);
   return {
-    props: { people } // will be passed to the page component as props
+    props: { people }, // will be passed to the page component as props
   };
-}
+};
 
 export default People;
